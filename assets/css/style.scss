@@ -1,0 +1,17 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+html, body { background: #0d1117; color: #c9d1d9; }
+.markdown-body { color: #c9d1d9; font-size: 17px; line-height: 1.6; }
+.markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #e6edf3; border-bottom-color: #30363d; }
+.markdown-body a { color: #58a6ff; }
+.markdown-body hr { background-color: #30363d; height: 1px; }
+.markdown-body code { background: #161b22; color: #e6edf3; }
+.markdown-body pre { background: #161b22; }
+.markdown-body blockquote { color: #8b949e; border-left-color: #30363d; }
+.markdown-body table tr { background: #0d1117; border-top-color: #30363d; }
+.markdown-body table tr:nth-child(2n) { background: #161b22; }
+.markdown-body table th, .markdown-body table td { border-color: #30363d; }
+.footer { border-top-color: #30363d; color: #8b949e; }
