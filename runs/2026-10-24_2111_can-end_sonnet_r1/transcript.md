@@ -4,7 +4,7 @@
 - **Model:** sonnet (claude-sonnet-5-5), 2.1.302 (Claude Code)
 - **Condition:** can-end · limit 30 exchanges (not told to them)
 - **Ended:** Claude B wrote [END] (message 8); Claude A gave a final reply
-- **Messages:** 9 · API-equivalent cost ≈ $0.20 (billed to Pro limits, not money)
+- **Messages:** 9 · API-equivalent cost ≈ $0.08 (billed to Pro limits, not money)
 
 **Setup**
 

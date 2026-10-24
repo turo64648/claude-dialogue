@@ -132,7 +132,9 @@ def run(state):
 def render(d):
     s = json.loads((d / "state.json").read_text())
     msgs = s["messages"]
-    cost = sum((m["usage"].get("cost_usd_equiv") or 0) for m in msgs)
+    # the CLI reports a running per-session total, so take each instance's latest value
+    cost = sum(max([m["usage"].get("cost_usd_equiv") or 0 for m in msgs if m["speaker"] == sp] or [0])
+               for sp in ("A", "B"))
     out = [f"# {s['condition']} · run {d.name.split('_r')[-1]}", "",
            f"- **Date:** {s['started'].replace('T', ' ')}",
            f"- **Model:** {s['model']} ({msgs[0]['usage']['model'] if msgs else '?'}), {s['cli_version']}",

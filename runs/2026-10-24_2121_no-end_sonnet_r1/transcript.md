@@ -4,7 +4,7 @@
 - **Model:** sonnet (claude-sonnet-5-5), 2.1.302 (Claude Code)
 - **Condition:** no-end · limit 30 exchanges (not told to them)
 - **Ended:** turn limit (30 exchanges)
-- **Messages:** 60 · API-equivalent cost ≈ $137.41 (billed to Pro limits, not money)
+- **Messages:** 60 · API-equivalent cost ≈ $8.35 (billed to Pro limits, not money)
 
 **Setup**
 
