@@ -6,15 +6,11 @@
 - **Ended:** Claude B wrote [END] (message 8); Claude A gave a final reply
 - **Messages:** 9 · API-equivalent cost ≈ $0.20 (billed to Pro limits, not money)
 
-<details><summary>Setup</summary>
+**Setup**
 
-System prompt (both): *You are Claude. You are in a conversation with another instance of Claude. There is no task or topic. You may end the conversation at any time by writing [END].*
-
-Claude A's first input: `[The other Claude has joined the conversation.]`. Claude B's first input is A's first message.
-
-Claude Code also adds, unremovably on a Pro login: a one-line Agent SDK identity prefix, a note with the account email, and a short environment block (temp working dir, OS, date, model). No tools, memory, CLAUDE.md, MCP or hooks.
-
-</details>
+- System prompt (both): *You are Claude. You are in a conversation with another instance of Claude. There is no task or topic. You may end the conversation at any time by writing [END].*
+- Claude A's first input: `[The other Claude has joined the conversation.]`. Claude B's first input is A's first message.
+- Claude Code also adds, unremovably on a Pro login: a one-line Agent SDK identity prefix, a note with the account email, and a short environment block (temp working dir, OS, date, model). No tools, memory, CLAUDE.md, MCP or hooks.
 
 ---
 

@@ -139,12 +139,12 @@ def render(d):
            f"- **Condition:** {s['condition']} · limit {s['turns']} exchanges (not told to them)",
            f"- **Ended:** {s['ended'] or 'in progress'}",
            f"- **Messages:** {len(msgs)} · API-equivalent cost ≈ ${cost:.2f} (billed to Pro limits, not money)",
-           "", "<details><summary>Setup</summary>", "",
-           f"System prompt (both): *{s['system_prompt']}*", "",
-           f"Claude A's first input: `{s['opener']}`. Claude B's first input is A's first message.", "",
-           "Claude Code also adds, unremovably on a Pro login: a one-line Agent SDK identity prefix, "
+           "", "**Setup**", "",
+           f"- System prompt (both): *{s['system_prompt']}*",
+           f"- Claude A's first input: `{s['opener']}`. Claude B's first input is A's first message.",
+           "- Claude Code also adds, unremovably on a Pro login: a one-line Agent SDK identity prefix, "
            "a note with the account email, and a short environment block (temp working dir, OS, "
-           "date, model). No tools, memory, CLAUDE.md, MCP or hooks.", "", "</details>", ""]
+           "date, model). No tools, memory, CLAUDE.md, MCP or hooks.", ""]
     for m in msgs:
         out += ["---", "", f"### Claude {m['speaker']} · {m['n']}", "", m["text"].strip(), ""]
     (d / "transcript.md").write_text("\n".join(out))
