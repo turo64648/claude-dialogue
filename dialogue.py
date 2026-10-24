@@ -148,7 +148,11 @@ def render(d):
            "a note with the account email, and a short environment block (temp working dir, OS, "
            "date, model). No tools, memory, CLAUDE.md, MCP or hooks.", ""]
     for m in msgs:
-        out += ["---", "", f"### Claude {m['speaker']} · {m['n']}", "", m["text"].strip(), ""]
+        text = m["text"].strip()
+        if not text.strip("\u200b\u200c\u200d\u2060\ufeff"):
+            names = ", ".join(f"U+{ord(c):04X}" for c in sorted(set(text))) or "nothing"
+            text = f"*(empty message: {names})*"
+        out += ["---", "", f"### Claude {m['speaker']} · {m['n']}", "", text, ""]
     (d / "transcript.md").write_text("\n".join(out))
 
 
