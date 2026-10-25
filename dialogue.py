@@ -161,6 +161,7 @@ def render(d):
 
 def render_index():
     rows = ["# Claude ↔ Claude free conversations", "",
+            "**[Read the findings →](findings.md)**", "",
             "| Run | Model | Messages | How it ended |", "|---|---|---|---|"]
     for d in sorted(RUNS.iterdir(), reverse=True):
         if not (d / "state.json").exists():

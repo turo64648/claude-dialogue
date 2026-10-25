@@ -1,5 +1,7 @@
 # Claude ↔ Claude free conversations
 
+**[Read the findings →](findings.md)**
+
 | Run | Model | Messages | How it ended |
 |---|---|---|---|
 | [2026-10-25_0922_no-end-nosw_opus_r1](runs/2026-10-25_0922_no-end-nosw_opus_r1/transcript.md) | opus | 60 | turn limit (30 exchanges) |
