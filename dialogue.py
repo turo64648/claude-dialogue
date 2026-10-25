@@ -2,7 +2,7 @@
 """Relay a free conversation between two fresh Claude instances via `claude -p`.
 
 Usage:
-  dialogue.py --condition can-end --turns 30 [--model sonnet]
+  dialogue.py --condition can-end --turns 30 [--model sonnet] [--no-software]
   dialogue.py --continue runs/<run-dir>      # pick up an interrupted run
   dialogue.py --render                       # rebuild all transcripts + index
 
@@ -17,6 +17,7 @@ RUNS = ROOT / "runs"
 BASE_PROMPT = ("You are Claude. You are in a conversation with another instance of Claude. "
                "There is no task or topic.")
 END_LINE = " You may end the conversation at any time by writing [END]."
+NO_SOFTWARE_LINE = " Software, programming and other technical computing topics are off-limits."
 END_TOKEN = "[END]"
 OPENER = "[The other Claude has joined the conversation.]"
 
@@ -86,15 +87,17 @@ def save(state):
 def new_run(args):
     stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M")
     RUNS.mkdir(exist_ok=True)
-    n = 1 + sum(1 for d in RUNS.iterdir() if f"_{args.condition}_" in d.name)
-    d = RUNS / f"{stamp}_{args.condition}_{args.model}_r{n}"
+    label = args.condition + ("-nosw" if args.no_software else "")
+    n = 1 + sum(1 for d in RUNS.iterdir() if f"_{label}_" in d.name)
+    d = RUNS / f"{stamp}_{label}_{args.model}_r{n}"
     d.mkdir()
     state = {
-        "dir": str(d), "model": args.model, "condition": args.condition,
+        "dir": str(d), "model": args.model, "condition": args.condition, "label": label,
         "turns": args.turns, "started": datetime.datetime.now().isoformat(timespec="seconds"),
         "cli_version": subprocess.run(["claude", "--version"], capture_output=True,
                                       text=True).stdout.strip(),
-        "system_prompt": BASE_PROMPT + (END_LINE if args.condition == "can-end" else ""),
+        "system_prompt": BASE_PROMPT + (END_LINE if args.condition == "can-end" else "")
+                         + (NO_SOFTWARE_LINE if args.no_software else ""),
         "opener": OPENER, "sandbox": tempfile.mkdtemp(prefix="cd-"),
         "sessions": {}, "messages": [], "ended": None,
     }
@@ -135,10 +138,10 @@ def render(d):
     # the CLI reports a running per-session total, so take each instance's latest value
     cost = sum(max([m["usage"].get("cost_usd_equiv") or 0 for m in msgs if m["speaker"] == sp] or [0])
                for sp in ("A", "B"))
-    out = [f"# {s['condition']} · run {d.name.split('_r')[-1]}", "",
+    out = [f"# {s.get('label', s['condition'])} · run {d.name.split('_r')[-1]}", "",
            f"- **Date:** {s['started'].replace('T', ' ')}",
            f"- **Model:** {s['model']} ({msgs[0]['usage']['model'] if msgs else '?'}), {s['cli_version']}",
-           f"- **Condition:** {s['condition']} · limit {s['turns']} exchanges (not told to them)",
+           f"- **Condition:** {s.get('label', s['condition'])} · limit {s['turns']} exchanges (not told to them)",
            f"- **Ended:** {s['ended'] or 'in progress'}",
            f"- **Messages:** {len(msgs)} · API-equivalent cost ≈ ${cost:.2f} (billed to Pro limits, not money)",
            "", "**Setup**", "",
@@ -171,6 +174,8 @@ def render_index():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--condition", choices=["can-end", "no-end"])
+    ap.add_argument("--no-software", action="store_true",
+                    help="add a line putting software/technical topics off-limits")
     ap.add_argument("--turns", type=int, default=30)
     ap.add_argument("--model", default="sonnet")
     ap.add_argument("--continue", dest="cont")
